@@ -1,0 +1,7 @@
+node_modules
+public/build
+public/images/*
+.DS_Store
+.vscode
+coverage
+custom.json

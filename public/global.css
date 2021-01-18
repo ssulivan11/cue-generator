@@ -1,0 +1,55 @@
+:root {
+  --primary-color: #111;
+  --secondary-color: #0047ab;
+  --bg-color: rgba(255, 255, 255, 0.8);
+  --input-color: #fff;
+  --input-border: #ccc;
+}
+
+[data-theme='dark'] {
+  --primary-color: #fff;
+  --secondary-color: #00ffff;
+  --bg-color: rgba(25, 25, 25, 0.9);
+  --input-color: #151515;
+  --input-border: #777;
+}
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg-color);
+  transition: color 1s;
+  color: var(--primary-color);
+  font-size: 16px;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+input,
+textarea {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+a {
+  transition: color 1s;
+  color: var(--primary-color);
+}
+
+ul,
+li,
+ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
