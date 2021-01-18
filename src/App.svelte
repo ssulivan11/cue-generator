@@ -111,6 +111,7 @@
 
     input,
     textarea {
+      outline-style: unset;
       padding: 15px;
       margin: 3px 0 15px;
       width: calc(100% - 45px);
@@ -118,6 +119,10 @@
       border-radius: 3px;
       color: var(--primary-color);
       background-color: var(--input-color);
+
+      &:focus {
+        border: 1px solid var(--secondary-color);
+      }
     }
 
     textarea {
@@ -130,7 +135,7 @@
 
     .xs-6 {
       width: 50%;
-      overflow-y: scroll;
+      overflow-y: auto;
       min-height: 100%;
     }
 
@@ -180,6 +185,9 @@
       input {
         width: auto;
         margin-right: 3px;
+        &:focus {
+          outline: 1px solid var(--secondary-color);
+        }
       }
     }
 
@@ -203,7 +211,7 @@
       border-radius: 3px;
       margin-top: 3px;
       height: calc(100% - 30px);
-      overflow-y: scroll;
+      overflow-y: auto;
     }
   }
 </style>
