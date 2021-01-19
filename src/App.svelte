@@ -45,13 +45,21 @@
         // if 00:00:00 (in Hour Format)
         if ((track.match(/\:/g) || []).length > 1) {
           const hourTime = /\d{1,2}:\d{1,2}:\d{1,2}/g;
-          trackTime = `0${track.match(hourTime)}`;
+          let trackDisplayTime = track.match(hourTime);
+
+          // hour track time starts with 0 or not
+          if (trackDisplayTime && trackDisplayTime.toString().length < 8) {
+            trackDisplayTime = `0${track.match(hourTime)}`;
+          }
+
+          trackTime = trackDisplayTime;
           trackTitle = track.replace(hourTime, '');
         } else {
           // if 00:00 (in Min/Sec only Format)
           const minTime = /\d{1,2}:\d{1,2}/g;
 
           let trackDisplayTime = track.match(minTime);
+          // min track time starts with 0 or not
           if (trackDisplayTime && trackDisplayTime.toString().length < 5) {
             trackDisplayTime = `0${track.match(minTime)}`;
           }

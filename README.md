@@ -1,10 +1,8 @@
 # 💿 Cue Generator
 
-> Live Site - [https://cue-generator.netlify.app/](https://cue-generator.netlify.app/)
-
 A tool to build valid CUE files with helpful tracklist formatting. Click the demo button to see the expected formats if needed.
 
-1. Firstly, provide your artist, album, and the desired file name.
+1. First provide your artist, album, and the desired file name.
 2. The tracklist can be given in many formats. If any leftover characters, you can use the trim start or end controls.
 
    Option 1 - requires no trimming:
@@ -28,4 +26,4 @@ A tool to build valid CUE files with helpful tracklist formatting. Click the dem
    2:50 - 2. Track Name 02
    ```
 
-3. Now can click to select all in the output or download a CUE file based on the name you provided.
+3. Now you can either click to select and copy all in the output or download a CUE file based on the file name you provided.
