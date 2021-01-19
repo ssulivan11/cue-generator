@@ -97,6 +97,17 @@
     document.body.appendChild(element);
     element.click();
   };
+
+  const demoEntries = () => {
+    artist = 'Pink Floyd';
+    album = 'The Dark Side of the Moon';
+    fileName = 'The Dark Side of the Moon Full Album 1973';
+    tracks = `0:01 - Speak\n1:05 - Breathe\n3:50 - On The Run\n7:28 - Time Intro\n9:51 - Time\n13:19 - Home Again\n14:29 - The Great Gig In The Sky\n19:16 - Money\n25:40 - Intro\n26:13 - Us & Them\n33:29 - Any Colour You Like\n36:55 - Brain Damage\n40:45 - Eclipse\n42:52 - The End`;
+    trimStart = 2;
+    const tracklistId = document.getElementById('tracklist');
+    tracklistId.dispatchEvent(new Event('focus'));
+    tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+  };
 </script>
 
 <style lang="scss">
@@ -125,7 +136,7 @@
         border: none;
         border-radius: 3px;
         color: var(--bg-color);
-        padding: 5px 10px;
+        padding: 4px 10px;
         text-align: center;
         text-decoration: none;
         font-weight: bold;
@@ -211,6 +222,10 @@
       min-height: 100%;
     }
 
+    &__demo {
+      margin-right: 15px;
+    }
+
     &__last-track {
       margin: 15px 0 0;
       display: flex;
@@ -256,6 +271,7 @@
   <h1>
     💿 Cue Generator
     <ThemeToggle />
+
   </h1>
   <div class="cue-app">
     <div class="xs-6">
@@ -263,6 +279,11 @@
         <label for="artist">
           Artist
           <strong>*</strong>
+          {#if !trackOutput && !artist && !fileName}
+            <button class="cue-app__demo" on:click={() => demoEntries()}>
+              Demo
+            </button>
+          {/if}
           <input
             id="artist"
             bind:value={artist}
@@ -288,7 +309,8 @@
         <textarea
           id="tracklist"
           bind:value={tracks}
-          on:keyup={() => updateTracks()} />
+          on:keyup={() => updateTracks()}
+          on:input={() => updateTracks()} />
 
         <label for="lasttrack" class="cue-app__last-track">
           <input
