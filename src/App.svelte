@@ -109,7 +109,7 @@
 
     h1 {
       display: flex;
-      padding: 0 25px;
+      margin: 25px;
     }
 
     label {
@@ -121,13 +121,14 @@
 
       button {
         float: right;
-        background-color: #4caf50;
+        background-color: var(--secondary-color);
         border: none;
         border-radius: 3px;
-        color: white;
+        color: var(--bg-color);
         padding: 5px 10px;
         text-align: center;
         text-decoration: none;
+        font-weight: bold;
         font-size: 10px;
         cursor: pointer;
 
@@ -177,6 +178,9 @@
         &__output {
           min-height: 500px;
         }
+        &__toggles label:first-child input {
+          width: calc(100% - 50px);
+        }
       }
 
       textarea {
@@ -215,7 +219,7 @@
 
       input {
         width: auto;
-        margin-right: 3px;
+        margin-right: 5px;
         &:focus {
           outline: 1px solid var(--secondary-color);
         }
@@ -236,6 +240,7 @@
       font-family: 'Courier New', Courier, monospace;
       user-select: all;
     }
+
     &__output {
       background-color: var(--bg-color);
       border: 1px solid var(--input-border);
