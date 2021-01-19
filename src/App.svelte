@@ -86,6 +86,17 @@
 
     return trackOutput;
   };
+
+  const downloadCueFile = () => {
+    const element = document.createElement('a');
+    const file = new Blob([document.getElementById('output').innerText], {
+      type: 'text/plain',
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = `${fileName}.cue`;
+    document.body.appendChild(element);
+    element.click();
+  };
 </script>
 
 <style lang="scss">
@@ -106,6 +117,26 @@
 
       strong {
         color: var(--secondary-color);
+      }
+
+      button {
+        float: right;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 3px;
+        color: white;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 10px;
+        cursor: pointer;
+
+        &:focus,
+        &:hover {
+          outline: none;
+          opacity: 0.6;
+          cursor: pointer;
+        }
       }
     }
 
@@ -241,6 +272,7 @@
 
         <label for="filename">
           File Name
+          <strong>*</strong>
           <input id="filename" bind:value={fileName} />
         </label>
 
@@ -285,9 +317,14 @@
 
     </div>
     <div class="xs-6">
-      <label>Output - READ ONLY</label>
+      <label>
+        Output - READ ONLY
+        {#if trackOutput && artist && fileName}
+          <button on:click={() => downloadCueFile()}>Download</button>
+        {/if}
+      </label>
       <div class="cue-app__output">
-        <div class="cue-app__output-select">
+        <div class="cue-app__output-select" id="output">
           <ul>
             <li>
               {#if artist}PERFORMER "{artist}"{/if}
@@ -296,7 +333,7 @@
               {#if album}TITLE "{album}"{/if}
             </li>
             <li>
-              {#if artist}FILE "{fileName}" MP3{/if}
+              {#if artist}FILE "" MP3{/if}
             </li>
           </ul>
           <ul>
