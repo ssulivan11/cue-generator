@@ -7,7 +7,7 @@
   let fileName = '';
   let tracks = '';
   let trackOutput = '';
-  let addEndTrack = false;
+  let addEndTrack = true;
 
   let trimStart = 0;
   let trimEnd = 0;
@@ -97,11 +97,11 @@
     });
 
     if (addEndTrack) {
-      trackOutput += `<li>${insertTab(1)}TRACK 99 AUDIO</li><li>${insertTab(
+      trackOutput += `<li>${insertTab(1)}TRACK 999 AUDIO</li><li>${insertTab(
         2
       )}PERFORMER "${artist || ''}"</li><li>${insertTab(
         2
-      )}TITLE "EOF"</li><li>${insertTab(2)}INDEX 01 59:59:59</li>`;
+      )}TITLE "EOF"</li><li>${insertTab(2)}INDEX 01 9999:59:59</li>`;
     }
 
     return trackOutput;
@@ -211,6 +211,9 @@
         }
         &__toggles label:first-child input {
           width: calc(100% - 50px);
+        }
+        &__demo {
+          margin-right: 0;
         }
       }
 
