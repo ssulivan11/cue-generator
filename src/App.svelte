@@ -49,10 +49,22 @@
 
           // hour track time starts with 0 or not
           if (trackDisplayTime && trackDisplayTime.toString().length < 8) {
-            trackDisplayTime = `0${track.match(hourTime)}`;
+            trackDisplayTime = `0${track.match(hourTime)}:00`;
+          } else {
+            trackDisplayTime = `${track.match(hourTime)}:00`;
           }
+          console.warn(trackDisplayTime);
 
-          trackTime = trackDisplayTime;
+          // ugly way to get hours to min in display from 1:30:15 to 90:15:00
+          let minToHourDigit =
+            trackDisplayTime && trackDisplayTime.split(':')[0] * 60;
+          let minAndSec = trackDisplayTime.substring(3);
+          let onlyMin = minAndSec.slice(0, -6);
+          minToHourDigit = minToHourDigit + parseInt(onlyMin, 10);
+          minAndSec = minAndSec && minAndSec.substring(3);
+
+          // console.warn(trackDisplayTime)
+          trackTime = `${minToHourDigit}:${minAndSec}`;
           trackTitle = track.replace(hourTime, '');
         } else {
           // if 00:00 (in Min/Sec only Format)
@@ -64,7 +76,7 @@
             trackDisplayTime = `0${track.match(minTime)}`;
           }
 
-          trackTime = `00:${trackDisplayTime || '00:00'}`;
+          trackTime = `${trackDisplayTime || '00:00'}:00`;
           trackTitle = track.replace(minTime, '');
         }
         // trim empty space from replaceAll above
