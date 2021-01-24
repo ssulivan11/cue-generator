@@ -8,13 +8,25 @@
   let tracks = '';
   let trackOutput = '';
   let addEndTrack = true;
+  let isAutoFileName = false;
 
   let trimStart = 0;
   let trimEnd = 0;
 
   marked.setOptions({
-    breaks: true,
+    breaks: true
   });
+
+  const artistUpdate = () => {
+    updateTracks();
+    return updateFileName();
+  };
+
+  const updateFileName = () => {
+    if (isAutoFileName) {
+      fileName = `${artist || ''} - ${album || ''}`;
+    }
+  };
 
   const updateTracks = () => {
     trackOutput = '';
@@ -110,7 +122,7 @@
   const downloadCueFile = () => {
     const element = document.createElement('a');
     const file = new Blob([document.getElementById('output').innerText], {
-      type: 'text/plain',
+      type: 'text/plain'
     });
     element.href = URL.createObjectURL(file);
     element.download = `${fileName}.cue`;
@@ -186,6 +198,11 @@
       &:focus {
         border: 1px solid var(--secondary-color);
       }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     }
 
     textarea {
@@ -249,10 +266,12 @@
       margin-right: 15px;
     }
 
-    &__last-track {
-      margin: 15px 0 0;
+    &__checkboxes {
       display: flex;
-      justify-content: flex-end;
+    }
+
+    &__checkbox {
+      margin: 15px 0 0;
       padding-right: 15px;
 
       input {
@@ -310,19 +329,25 @@
           <input
             id="artist"
             bind:value={artist}
-            on:keyup={() => updateTracks()} />
+            on:keyup={() => artistUpdate()} />
         </label>
 
         <label for="album">
           Album
           <strong>*</strong>
-          <input id="album" bind:value={album} />
+          <input
+            id="album"
+            bind:value={album}
+            on:keyup={() => updateFileName()} />
         </label>
 
         <label for="filename">
           File Name
           <strong>*</strong>
-          <input id="filename" bind:value={fileName} />
+          <input
+            id="filename"
+            bind:value={fileName}
+            disabled={isAutoFileName} />
         </label>
 
         <label for="tracklist">
@@ -335,14 +360,25 @@
           on:keyup={() => updateTracks()}
           on:input={() => updateTracks()} />
 
-        <label for="lasttrack" class="cue-app__last-track">
-          <input
-            type="checkbox"
-            id="lasttrack"
-            bind:checked={addEndTrack}
-            on:change={() => updateTracks()} />
-          Add EOF
-        </label>
+        <div class="cue-app__checkboxes">
+          <label for="lasttrack" class="cue-app__checkbox">
+            <input
+              type="checkbox"
+              id="lasttrack"
+              bind:checked={addEndTrack}
+              on:change={() => updateTracks()} />
+            Add EOF
+          </label>
+
+          <label for="autofilename" class="cue-app__checkbox">
+            <input
+              type="checkbox"
+              id="autofilename"
+              bind:checked={isAutoFileName}
+              on:change={() => updateFileName()} />
+            Auto File Name
+          </label>
+        </div>
 
         <div class="cue-app__toggles">
           <label for="trimstart">
