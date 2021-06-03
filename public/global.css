@@ -31,8 +31,13 @@ body {
   transition: color 1s;
   color: var(--primary-color);
   font-size: 16px;
+  min-width: 500px;
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+header {
+  min-width: 500px;
 }
 
 input,
@@ -68,6 +73,6 @@ main {
 }
 
 h1 {
-  display: flex;
-  margin: 25px;
+  display: inline-block;
+  margin: 45px 25px 25px;
 }

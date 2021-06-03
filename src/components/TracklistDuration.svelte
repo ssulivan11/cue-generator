@@ -90,7 +90,7 @@
       width: auto;
       border: 1px solid var(--input-border);
       color: var(--primary-color);
-      background-color: var(--input-color);
+      background-color: var(--bg-color);
 
       &:focus {
         border: 1px solid var(--secondary-color);
