@@ -25,8 +25,8 @@
   .theme-switch {
     display: flex;
     align-items: center;
-    flex-grow: 1;
-    justify-content: flex-end;
+    // flex-grow: 1;
+    // justify-content: flex-end;
 
     &__label {
       display: inline-block;
