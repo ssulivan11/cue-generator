@@ -41,7 +41,7 @@
   };
 
   const demoEntries = () => {
-    times = `As the Story Goes 00:30\nGold Rush 02:32\nWillis Creek 01:38\nHotbox Cabin 01:27\nSmooth Sailing 02:28\nVillain Theme Song 01:50\nDrinks at the Penny Slot 01:54\nMichelin Star 02:28\nWishful Drinking 01:45\nTen Cent Beer Night 02:46\nHazel Part Five 01:37\nThe Cigarette Bandit 01:31\nCan't Live 01:15\nEdible in a Hot Tub 01:17\nLast Call in the Monastery 02:50`;
+    times = `Speak To Me 01:08\nBreathe 02:48\nOn The Run 03:31\nTime 07:05\nThe Great Gig In The Sky 04:47\nMoney 06:23\nUs And Them 07:48\nAny Colour You Like 03:25\nBrain Damage 03:50\nEclipse 02:06`;
     const tracklistId = document.getElementById('input');
     tracklistId.dispatchEvent(new Event('focus'));
     tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
@@ -53,6 +53,10 @@
     padding: 0 25px;
     height: calc(100vh - 140px);
     display: flex;
+    flex-direction: row;
+    @media only screen and (max-width: 700px) {
+      flex-direction: column;
+    }
 
     &__form {
       width: 50%;
@@ -72,6 +76,19 @@
           textarea {
             background-color: var(--input-color);
             width: 100%;
+          }
+        }
+      }
+    }
+
+    @media only screen and (max-width: 700px) {
+      .tracklist-forms {
+        &__form {
+          width: 100%;
+          min-height: 50%;
+
+          &:first-child label {
+            width: calc(100% - 35px);
           }
         }
       }

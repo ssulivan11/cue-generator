@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c && buildsize-cli",
-    "start": "sirv public",
+    "start": "sirv public --single",
     "format": "pretty-quick --write .",
     "lint": "eslint . --ext .js,.svelte --ignore-path .gitignore",
     "test": "jest src",

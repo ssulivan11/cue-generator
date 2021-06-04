@@ -133,7 +133,7 @@
     artist = 'Pink Floyd';
     album = 'The Dark Side of the Moon';
     fileName = 'The Dark Side of the Moon Full Album 1973';
-    tracks = `0:01 - Speak\n1:05 - Breathe\n3:50 - On The Run\n7:28 - Time Intro\n9:51 - Time\n13:19 - Home Again\n14:29 - The Great Gig In The Sky\n19:16 - Money\n25:40 - Intro\n26:13 - Us & Them\n33:29 - Any Colour You Like\n36:55 - Brain Damage\n40:45 - Eclipse\n42:52 - The End`;
+    tracks = `00:00 - Speak To Me\n01:08 - Breathe\n03:56 - On The Run\n07:27 - Time\n14:32 - The Great Gig In The Sky\n19:19 - Money\n25:42 - Us And Them\n33:30 - Any Colour You Like\n36:55 - Brain Damage\n40:45 - Eclipse`;
     trimStart = 2;
     const tracklistId = document.getElementById('tracklist');
     tracklistId.dispatchEvent(new Event('focus'));
