@@ -68,7 +68,7 @@
 
       &:first-child {
         button {
-          right: 5px;
+          right: 15px;
         }
         label {
           width: calc(100% - 45px);
@@ -87,8 +87,13 @@
           width: 100%;
           min-height: 50%;
 
-          &:first-child label {
-            width: calc(100% - 35px);
+          &:first-child {
+            button {
+              right: 5px;
+            }
+            label {
+              width: calc(100% - 35px);
+            }
           }
         }
       }
