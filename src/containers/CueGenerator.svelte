@@ -162,6 +162,7 @@
         font-weight: bold;
         font-size: 10px;
         cursor: pointer;
+        transition: opacity 0.1s ease-in;
 
         &:focus,
         &:hover {

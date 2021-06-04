@@ -68,7 +68,7 @@
 
       &:first-child {
         button {
-          right: 15px;
+          right: 5px;
         }
         label {
           width: calc(100% - 45px);
@@ -127,6 +127,7 @@
       font-weight: bold;
       font-size: 10px;
       cursor: pointer;
+      transition: opacity 0.1s ease-in;
 
       &:focus,
       &:hover {

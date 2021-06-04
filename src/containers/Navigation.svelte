@@ -19,6 +19,24 @@
     padding: 0 25px;
     display: flex;
     justify-content: flex-end;
+
+    &__github {
+      height: 21px;
+      width: 21px;
+      margin-right: 10px;
+      border-radius: 100%;
+      overflow: hidden;
+      display: flex;
+      opacity: 0.6;
+      transition: opacity 0.1s ease-in;
+
+      &:focus,
+      &:hover {
+        outline: none;
+        opacity: 1;
+        cursor: pointer;
+      }
+    }
   }
 
   :global(.header__link) {
@@ -27,10 +45,18 @@
     border-radius: 3px;
     background-color: var(--primary-color);
     color: var(--bg-color);
-    font-size: 12px;
+    font-size: 10px;
     margin-right: 10px;
     text-decoration: none;
     opacity: 0.6;
+    transition: opacity 0.1s ease-in;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      opacity: 1;
+      cursor: pointer;
+    }
   }
 
   :global([aria-current]:not([aria-current='false'])) {
@@ -48,12 +74,16 @@
         Tracklist Duration
       </Link>
       <Link class="header__link" to="about">About</Link>
-      <!-- <a href="https://github.com/ssulivan11/cue-generator">
+      <a
+        href="https://github.com/ssulivan11/cue-generator"
+        class="header__github"
+        target="_blank">
         <img
           alt="github"
           src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
-      </a> -->
+      </a>
     </nav>
     <ThemeToggle />
+
   </div>
 </header>

@@ -25,8 +25,15 @@
   .theme-switch {
     display: flex;
     align-items: center;
-    // flex-grow: 1;
-    // justify-content: flex-end;
+    opacity: 0.6;
+    transition: opacity 0.1s ease-in;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      opacity: 1;
+      cursor: pointer;
+    }
 
     &__label {
       display: inline-block;
