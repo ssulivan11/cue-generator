@@ -76,3 +76,25 @@ h1 {
   display: inline-block;
   margin: 45px 25px 25px;
 }
+
+/* ERROR PAGE - 404*/
+main.error-page {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+main.error-page h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 4rem;
+}
+
+main.error-page h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+}
