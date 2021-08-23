@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "--------- BUILDING -------------------------------": "",
     "dev": "rollup -c -w",
     "build": "rollup -c && buildsize-cli",
     "start": "sirv public --single",
+    "--------- INTEGRITY ------------------------------": "",
     "format": "pretty-quick --write .",
+    "format:check": "pretty-quick --check .",
     "lint": "eslint . --ext .js,.svelte --ignore-path .gitignore",
     "test": "jest src",
     "test:watch": "jest src --watch --coverage"
