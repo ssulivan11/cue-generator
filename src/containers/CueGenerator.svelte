@@ -1,16 +1,29 @@
 <script>
   import marked from 'marked';
+  import { onMount } from 'svelte';
+  import { writable } from 'svelte/store';
 
-  let artist = '';
-  let album = '';
-  let fileName = '';
-  let tracks = '';
+  onMount(async () => {
+    setDefaults();
+    return updateFileName();
+  });
+
+  const cue_store = writable(
+    localStorage.cue_store ? JSON.parse(localStorage.cue_store) : {}
+  );
+  cue_store.subscribe((val) =>
+    localStorage.setItem('cue_store', JSON.stringify(val))
+  );
+
   let trackOutput = '';
-  let addEndTrack = true;
-  let isAutoFileName = true;
-
-  let trimStart = 0;
-  let trimEnd = 0;
+  const setDefaults = () => {
+    if (typeof $cue_store.isAutoFileName === 'undefined')
+      $cue_store.isAutoFileName = true;
+    if (typeof $cue_store.addEndTrack === 'undefined')
+      $cue_store.addEndTrack = true;
+    if (typeof $cue_store.trimStart === 'undefined') $cue_store.trimStart = 0;
+    if (typeof $cue_store.trimEnd === 'undefined') $cue_store.trimEnd = 0;
+  };
 
   marked.setOptions({
     breaks: true
@@ -22,14 +35,17 @@
   };
 
   const updateFileName = () => {
-    if (isAutoFileName) {
-      fileName = `${artist || ''} - ${album || ''}`;
+    updateTracks();
+    if ($cue_store.isAutoFileName && $cue_store.artist && $cue_store.album) {
+      $cue_store.fileName = `${$cue_store.artist || ''} - ${
+        $cue_store.album || ''
+      }`;
     }
   };
 
   const updateTracks = () => {
     trackOutput = '';
-    const htmlTracks = marked(tracks);
+    const htmlTracks = marked($cue_store.tracks);
 
     const cleanedUpTracks = htmlTracks
       .replaceAll('<p>', '')
@@ -64,7 +80,6 @@
           } else {
             trackDisplayTime = `${track.match(hourTime)}:00`;
           }
-          console.warn(trackDisplayTime);
 
           // ugly way to get hours to min in display from 1:30:15 to 90:15:00
           let minToHourDigit =
@@ -92,25 +107,26 @@
         }
         // trim empty space from replaceAll above
         trackTitle = trackTitle.trimStart().trimEnd();
-        if (trimEnd > 0) trackTitle = trackTitle.slice(0, -trimEnd);
-        if (trimStart > 0) trackTitle = trackTitle.substring(trimStart);
+        if ($cue_store.trimEnd > 0) trackTitle = trackTitle.slice(0, -trimEnd);
+        if ($cue_store.trimStart > 0)
+          trackTitle = trackTitle.substring($cue_store.trimStart);
         return trackTitle;
       };
 
       const trackString = `<li>${insertTab(1)}TRACK 0${
         index + 1
       } AUDIO</li><li>${insertTab(2)}PERFORMER "${
-        artist || ''
+        $cue_store.artist || ''
       }"</li><li>${insertTab(2)}TITLE "${newTrack()}"</li><li>${insertTab(
         2
       )}INDEX 01 ${trackTime}</li>`;
       return (trackOutput += trackString);
     });
 
-    if (addEndTrack) {
+    if ($cue_store.addEndTrack) {
       trackOutput += `<li>${insertTab(1)}TRACK 999 AUDIO</li><li>${insertTab(
         2
-      )}PERFORMER "${artist || ''}"</li><li>${insertTab(
+      )}PERFORMER "${$cue_store.artist || ''}"</li><li>${insertTab(
         2
       )}TITLE "EOF"</li><li>${insertTab(2)}INDEX 01 9999:59:59</li>`;
     }
@@ -124,20 +140,31 @@
       type: 'text/plain'
     });
     element.href = URL.createObjectURL(file);
-    element.download = `${fileName}.cue`;
+    element.download = `${$cue_store.fileName}.cue`;
     document.body.appendChild(element);
     element.click();
   };
 
-  const demoEntries = () => {
-    artist = 'Pink Floyd';
-    album = 'The Dark Side of the Moon';
-    fileName = 'The Dark Side of the Moon Full Album 1973';
-    tracks = `00:00 - Speak To Me\n01:08 - Breathe\n03:56 - On The Run\n07:27 - Time\n14:32 - The Great Gig In The Sky\n19:19 - Money\n25:42 - Us And Them\n33:30 - Any Colour You Like\n36:55 - Brain Damage\n40:45 - Eclipse`;
-    trimStart = 2;
+  const changeEntries = (clear = false) => {
+    $cue_store.artist = clear ? '' : 'Pink Floyd';
+    $cue_store.album = clear ? '' : 'The Dark Side of the Moon';
+    $cue_store.fileName = clear
+      ? ''
+      : 'The Dark Side of the Moon Full Album 1973';
+    $cue_store.tracks = clear
+      ? ''
+      : `00:00 - Speak To Me\n01:08 - Breathe\n03:56 - On The Run\n07:27 - Time\n14:32 - The Great Gig In The Sky\n19:19 - Money\n25:42 - Us And Them\n33:30 - Any Colour You Like\n36:55 - Brain Damage\n40:45 - Eclipse`;
+    $cue_store.trimStart = clear ? 0 : 2;
+    $cue_store.trimEnd = 0;
+    $cue_store.addEndTrack = true;
+    $cue_store.isAutoFileName = clear;
     const tracklistId = document.getElementById('tracklist');
     tracklistId.dispatchEvent(new Event('focus'));
     tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+
+    if (clear) {
+      setDefaults();
+    }
   };
 </script>
 
@@ -301,14 +328,18 @@
         <label for="artist">
           Artist
           <strong>*</strong>
-          {#if !trackOutput && !artist && !fileName}
-            <button class="cue-app__demo" on:click={() => demoEntries()}>
+          {#if !$cue_store.artist && !$cue_store.fileName}
+            <button class="cue-app__demo" on:click={() => changeEntries()}>
               Demo
+            </button>
+          {:else}
+            <button class="cue-app__demo" on:click={() => changeEntries(true)}>
+              Clear
             </button>
           {/if}
           <input
             id="artist"
-            bind:value={artist}
+            bind:value={$cue_store.artist}
             on:keyup={() => artistUpdate()} />
         </label>
 
@@ -317,17 +348,19 @@
           <strong>*</strong>
           <input
             id="album"
-            bind:value={album}
+            bind:value={$cue_store.album}
             on:keyup={() => updateFileName()} />
         </label>
 
         <label for="filename">
           File Name
-          <strong>*</strong>
+          {#if !$cue_store.isAutoFileName}
+            <strong>*</strong>
+          {/if}
           <input
             id="filename"
-            bind:value={fileName}
-            disabled={isAutoFileName} />
+            bind:value={$cue_store.fileName}
+            disabled={$cue_store.isAutoFileName} />
         </label>
 
         <label for="tracklist">
@@ -336,7 +369,7 @@
         </label>
         <textarea
           id="tracklist"
-          bind:value={tracks}
+          bind:value={$cue_store.tracks}
           on:keyup={() => updateTracks()}
           on:input={() => updateTracks()} />
 
@@ -345,7 +378,7 @@
             <input
               type="checkbox"
               id="lasttrack"
-              bind:checked={addEndTrack}
+              bind:checked={$cue_store.addEndTrack}
               on:change={() => updateTracks()} />
             Add EOF
           </label>
@@ -354,7 +387,7 @@
             <input
               type="checkbox"
               id="autofilename"
-              bind:checked={isAutoFileName}
+              bind:checked={$cue_store.isAutoFileName}
               on:change={() => updateFileName()} />
             Auto File Name
           </label>
@@ -366,7 +399,7 @@
             <input
               type="number"
               id="trimstart"
-              bind:value={trimStart}
+              bind:value={$cue_store.trimStart}
               on:change={() => updateTracks()} />
           </label>
           <label for="trimend">
@@ -374,7 +407,7 @@
             <input
               type="number"
               id="trimend"
-              bind:value={trimEnd}
+              bind:value={$cue_store.trimEnd}
               on:change={() => updateTracks()} />
           </label>
         </div>
@@ -385,7 +418,7 @@
     <div class="xs-6">
       <label>
         Output - READ ONLY
-        {#if trackOutput && artist && fileName}
+        {#if trackOutput && $cue_store.artist && $cue_store.fileName}
           <button on:click={() => downloadCueFile()}>Download</button>
         {/if}
       </label>
@@ -393,17 +426,17 @@
         <div class="cue-app__output-select" id="output">
           <ul>
             <li>
-              {#if artist}PERFORMER "{artist}"{/if}
+              {#if $cue_store.artist}PERFORMER "{$cue_store.artist}"{/if}
             </li>
             <li>
-              {#if album}TITLE "{album}"{/if}
+              {#if $cue_store.album}TITLE "{$cue_store.album}"{/if}
             </li>
             <li>
-              {#if artist}FILE "" MP3{/if}
+              {#if $cue_store.artist}FILE "" MP3{/if}
             </li>
           </ul>
           <ul>
-            {#if trackOutput && artist}
+            {#if trackOutput && $cue_store.artist}
               {@html marked(trackOutput)}
             {/if}
           </ul>

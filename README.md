@@ -2,10 +2,10 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/55844e54-e253-4018-856e-6cf7dcbd9506/deploy-status)](https://app.netlify.com/sites/cue-generator/deploys)
 
-A tool to build valid CUE files with helpful tracklist formatting. Click the demo button to see the expected formats if needed.
+A tool to build valid CUE files with helpful track list formatting. Click the demo button to see the expected formats if needed.
 
 1. First provide your artist, album, and the desired file name.
-2. The tracklist can be given in many formats. If any leftover characters, you can use the trim start or end controls.
+2. The track list can be given in many formats. If any leftover characters, you can use the trim start or end controls.
 
    Option 1 - requires no trimming:
 
@@ -30,7 +30,7 @@ A tool to build valid CUE files with helpful tracklist formatting. Click the dem
 
 3. Now you can either click to select and copy all in the output or download a CUE file based on the file name you provided.
 
-## ⌛ Tracklist Duraction
+## ⌛ Track list Duration
 
 Sometimes you are only have individual track lists lengths and not the combined start of each track in an album, eg:
 
