@@ -8,6 +8,9 @@
     return updateFileName();
   });
 
+  let validTrackListTime = true;
+  let validTrackNumbers = true;
+
   const cue_store = writable(
     localStorage.cue_store ? JSON.parse(localStorage.cue_store) : {}
   );
@@ -64,6 +67,8 @@
       return '&nbsp;&nbsp;&nbsp;&nbsp;';
     };
 
+    let trackTest = [];
+
     cleanedUpTracks.forEach((track, index) => {
       let trackTime;
       let trackTitle;
@@ -105,6 +110,9 @@
           trackTime = `${trackDisplayTime || '00:00'}:00`;
           trackTitle = track.replace(minTime, '');
         }
+
+        trackTest.push(trackTime);
+
         // trim empty space from replaceAll above
         trackTitle = trackTitle.trimStart().trimEnd();
         if ($cue_store.trimEnd > 0) trackTitle = trackTitle.slice(0, -trimEnd);
@@ -130,6 +138,14 @@
         2
       )}TITLE "EOF"</li><li>${insertTab(2)}INDEX 01 9999:59:59</li>`;
     }
+
+    // validation of tracklist times and NaN issues
+    const properTrackListTest = trackTest
+      .slice()
+      .sort((a, b) => a.replaceAll(':', '') - b.replaceAll(':', ''));
+    validTrackListTime =
+      JSON.stringify(properTrackListTest) === JSON.stringify(trackTest);
+    validTrackNumbers = !trackTest.includes('NaN:0');
 
     return trackOutput;
   };
@@ -215,6 +231,10 @@
         opacity: 0.5;
         cursor: not-allowed;
       }
+
+      &.invalid {
+        border-color: var(--error-color);
+      }
     }
 
     textarea {
@@ -294,6 +314,13 @@
       }
     }
 
+    &__small_error {
+      color: var(--error-color);
+      font-style: italic;
+      float: right;
+      padding-right: 15px;
+    }
+
     &__toggles {
       margin: 0 0 5px;
       display: flex;
@@ -366,9 +393,17 @@
         <label for="tracklist">
           Tracklist
           <strong>*</strong>
+          {#if validTrackListTime === false || validTrackNumbers === false}
+            <small class="cue-app__small_error">
+              {validTrackListTime === false ? 'check track list times' : ''}
+              {validTrackListTime === false && validTrackNumbers === false ? ' & ' : ''}
+              {validTrackNumbers === false ? 'invalid time present' : ''}
+            </small>
+          {/if}
         </label>
         <textarea
           id="tracklist"
+          class:invalid={validTrackListTime === false || validTrackNumbers === false}
           bind:value={$cue_store.tracks}
           on:keyup={() => updateTracks()}
           on:input={() => updateTracks()} />

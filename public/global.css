@@ -4,6 +4,7 @@
   --bg-color: rgba(245, 245, 245, 0.9);
   --input-color: #fff;
   --input-border: #ccc;
+  --error-color: #ff0033;
 }
 
 [data-theme='dark'] {
@@ -12,6 +13,7 @@
   --bg-color: rgba(25, 25, 25, 0.9);
   --input-color: #121212;
   --input-border: #777;
+  --error-color: #ff0033;
 }
 
 html,
