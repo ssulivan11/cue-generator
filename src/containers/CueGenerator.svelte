@@ -1,5 +1,5 @@
 <script>
-  import marked from 'marked';
+  import { marked } from 'marked';
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
 
@@ -49,16 +49,15 @@
   const updateTracks = () => {
     trackOutput = '';
     const htmlTracks = marked($cue_store.tracks);
-
     const cleanedUpTracks = htmlTracks
-      .replaceAll('<p>', '')
-      .replaceAll('</p>', '')
-      .replaceAll('<ol>', '')
-      .replaceAll('</ol>', '')
-      .replaceAll('<ul>', '')
-      .replaceAll('</ul>', '')
-      .replaceAll('<li>', '')
-      .replaceAll('</li>', '<br>')
+      .replace(/<p>/g, '')
+      .replace(/<\/p>/g, '')
+      .replace(/<ol>/g, '')
+      .replace(/<\/ol>/g, '')
+      .replace(/<ul>/g, '')
+      .replace(/<\/ul>/g, '')
+      .replace(/<li>/g, '')
+      .replace(/<\/li>/g, '<br>')
       .replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, '') // remove last BR
       .split('<br>');
 
@@ -113,9 +112,10 @@
 
         trackTest.push(trackTime);
 
-        // trim empty space from replaceAll above
+        // trim empty space from replace above
         trackTitle = trackTitle.trimStart().trimEnd();
-        if ($cue_store.trimEnd > 0) trackTitle = trackTitle.slice(0, -trimEnd);
+        if ($cue_store.trimEnd > 0)
+          trackTitle = trackTitle.slice(0, -$cue_store.trimEnd);
         if ($cue_store.trimStart > 0)
           trackTitle = trackTitle.substring($cue_store.trimStart);
         return trackTitle;
@@ -142,7 +142,7 @@
     // validation of tracklist times and NaN issues
     const properTrackListTest = trackTest
       .slice()
-      .sort((a, b) => a.replaceAll(':', '') - b.replaceAll(':', ''));
+      .sort((a, b) => a.replace(/:/, '') - b.replace(/:/, ''));
     validTrackListTime =
       JSON.stringify(properTrackListTest) === JSON.stringify(trackTest);
     validTrackNumbers = !trackTest.includes('NaN:0');
@@ -178,10 +178,9 @@
     tracklistId.dispatchEvent(new Event('focus'));
     tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
 
-    if (clear) {
-      setDefaults();
-    }
+    if (clear) setDefaults();
   };
+
 </script>
 
 <style lang="scss">
@@ -345,6 +344,7 @@
       overflow-y: auto;
     }
   }
+
 </style>
 
 <main>
@@ -356,16 +356,23 @@
           Artist
           <strong>*</strong>
           {#if !$cue_store.artist && !$cue_store.fileName}
-            <button class="cue-app__demo" on:click={() => changeEntries()}>
+            <button
+              class="cue-app__demo"
+              on:click={() => changeEntries()}
+              data-testid="demo-button">
               Demo
             </button>
           {:else}
-            <button class="cue-app__demo" on:click={() => changeEntries(true)}>
+            <button
+              class="cue-app__demo"
+              on:click={() => changeEntries(true)}
+              data-testid="clear-button">
               Clear
             </button>
           {/if}
           <input
             id="artist"
+            data-testid="artist-input"
             bind:value={$cue_store.artist}
             on:keyup={() => artistUpdate()} />
         </label>
@@ -375,17 +382,17 @@
           <strong>*</strong>
           <input
             id="album"
+            data-testid="album-input"
             bind:value={$cue_store.album}
             on:keyup={() => updateFileName()} />
         </label>
 
         <label for="filename">
           File Name
-          {#if !$cue_store.isAutoFileName}
-            <strong>*</strong>
-          {/if}
+          {#if !$cue_store.isAutoFileName}<strong>*</strong>{/if}
           <input
             id="filename"
+            data-testid="filename-input"
             bind:value={$cue_store.fileName}
             disabled={$cue_store.isAutoFileName} />
         </label>
@@ -446,19 +453,17 @@
               on:change={() => updateTracks()} />
           </label>
         </div>
-
       </div>
-
     </div>
     <div class="xs-6">
-      <label>
+      <label for="track-output">
         Output - READ ONLY
         {#if trackOutput && $cue_store.artist && $cue_store.fileName}
           <button on:click={() => downloadCueFile()}>Download</button>
         {/if}
       </label>
-      <div class="cue-app__output">
-        <div class="cue-app__output-select" id="output">
+      <div class="cue-app__output" id="track-output">
+        <div class="cue-app__output-select" id="output" data-testid="output">
           <ul>
             <li>
               {#if $cue_store.artist}PERFORMER "{$cue_store.artist}"{/if}
@@ -478,6 +483,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </main>

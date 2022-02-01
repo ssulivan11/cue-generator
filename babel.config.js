@@ -7,8 +7,9 @@ const babelConfig = {
           node: 'current'
         }
       }
-    ]
+    ],
+    '@babel/preset-typescript'
   ]
-}
+};
 
-module.exports = babelConfig
+module.exports = babelConfig;

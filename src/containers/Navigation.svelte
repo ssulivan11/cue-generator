@@ -1,6 +1,7 @@
 <script>
   import { Link } from 'svelte-navigator';
   import ThemeToggle from './Theme.svelte';
+
 </script>
 
 <style lang="scss">
@@ -64,16 +65,24 @@
     opacity: 1;
     cursor: default;
   }
+
 </style>
 
 <header>
   <div class="header">
     <nav>
-      <Link class="header__link" to="/">Cue Generator</Link>
-      <Link class="header__link" to="tracklist-duration">
+      <Link class="header__link" to="/" data-testid="cue-generator-link">
+        Cue Generator
+      </Link>
+      <Link
+        class="header__link"
+        to="tracklist-duration"
+        data-testid="tracklist-duration-link">
         Tracklist Duration
       </Link>
-      <Link class="header__link" to="about">About</Link>
+      <Link class="header__link" to="about" data-testid="about-link">
+        About
+      </Link>
       <a
         href="https://github.com/ssulivan11/cue-generator"
         class="header__github"
@@ -84,6 +93,5 @@
       </a>
     </nav>
     <ThemeToggle />
-
   </div>
 </header>

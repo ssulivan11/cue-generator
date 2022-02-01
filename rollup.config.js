@@ -1,26 +1,26 @@
-import svelte from 'rollup-plugin-svelte'
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import typescript from '@rollup/plugin-typescript'
-import autoPreprocess from 'svelte-preprocess'
-import livereload from 'rollup-plugin-livereload'
-import { terser } from 'rollup-plugin-terser'
-import json from 'rollup-plugin-json'
-import progress from 'rollup-plugin-progress'
-import bundleSize from 'rollup-plugin-bundle-size'
+import svelte from 'rollup-plugin-svelte';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import autoPreprocess from 'svelte-preprocess';
+import livereload from 'rollup-plugin-livereload';
+import { terser } from 'rollup-plugin-terser';
+import json from 'rollup-plugin-json';
+import progress from 'rollup-plugin-progress';
+import bundleSize from 'rollup-plugin-bundle-size';
 
-const production = !process.env.ROLLUP_WATCH
+const production = !process.env.ROLLUP_WATCH;
 
 const typeCheck = () => {
   return {
     writeBundle() {
       require('child_process').spawn('svelte-check', {
         stdio: ['ignore', 'inherit', 'inherit'],
-        shell: true,
-      })
-    },
-  }
-}
+        shell: true
+      });
+    }
+  };
+};
 
 export default {
   input: 'src/main.ts',
@@ -28,7 +28,7 @@ export default {
     sourcemap: true,
     format: 'iife',
     name: 'app',
-    file: 'public/build/bundle.js',
+    file: 'public/build/bundle.js'
   },
   plugins: [
     progress(),
@@ -39,38 +39,38 @@ export default {
       preprocess: autoPreprocess(),
       dev: !production,
       css: (css) => {
-        css.write('public/build/bundle.css')
-      },
+        css.write('bundle.css');
+      }
     }),
     resolve({
       browser: true,
-      dedupe: ['svelte'],
+      dedupe: ['svelte']
     }),
     commonjs(),
     json({
       exclude: ['node_modules'],
-      compact: true,
+      compact: true
     }),
     !production && serve(),
     !production && livereload('public'),
-    production && terser(),
+    production && terser()
   ],
   watch: {
-    clearScreen: false,
-  },
-}
+    clearScreen: false
+  }
+};
 
 function serve() {
-  let started = false
+  let started = false;
   return {
     writeBundle() {
       if (!started) {
-        started = true
+        started = true;
         require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
           stdio: ['ignore', 'inherit', 'inherit'],
-          shell: true,
-        })
+          shell: true
+        });
       }
-    },
-  }
+    }
+  };
 }

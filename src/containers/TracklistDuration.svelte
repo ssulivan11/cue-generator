@@ -15,11 +15,11 @@
 
       /** Return first track and start time  */
       if (index === 0)
-        return output.push(`${combinedTime.substr(3)} - ${song}`);
+        return output.push(`${combinedTime.substring(3)} - ${song}`);
 
       /** Every song starts at the end of the last time  */
       const i = index - 1;
-      const time = `00:${allTimes[i].substr(allTimes[i].length - 5)}`;
+      const time = `00:${allTimes[i].substring(allTimes[i].length - 5)}`;
 
       /** Combine old time and new time  */
       const combinedTimeDur = moment.duration(combinedTime);
@@ -31,21 +31,22 @@
         .utc(combinedTimeDur.asMilliseconds())
         .format('HH:mm:ss');
 
-      return output.push(`${combinedTime.substr(3)} - ${song}`);
+      return output.push(`${combinedTime.substring(3)} - ${song}`);
     });
   };
 
   const copyTextArea = () => {
-    document.getElementById('output').select();
+    document.getElementById('track-name-and-times-output').select();
     document.execCommand('copy');
   };
 
   const demoEntries = () => {
     times = `Speak To Me 01:08\nBreathe 02:48\nOn The Run 03:31\nTime 07:05\nThe Great Gig In The Sky 04:47\nMoney 06:23\nUs And Them 07:48\nAny Colour You Like 03:25\nBrain Damage 03:50\nEclipse 02:06`;
-    const tracklistId = document.getElementById('input');
+    const tracklistId = document.getElementById('track-name-and-times-input');
     tracklistId.dispatchEvent(new Event('focus'));
     tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
   };
+
 </script>
 
 <style lang="scss">
@@ -142,6 +143,7 @@
       }
     }
   }
+
 </style>
 
 <main>
@@ -150,24 +152,27 @@
   <div class="tracklist-forms">
     <div class="tracklist-forms__form">
       {#if !times}
-        <button on:click={demoEntries}>Demo</button>
+        <button data-testid="demo-button" on:click={demoEntries}>Demo</button>
       {/if}
       <label>
         Track Name and Times
-        <textarea id="input" on:keyup={handleChange} bind:value={times} />
+        <textarea
+          data-testid="track-name-and-times-input"
+          id="track-name-and-times-input"
+          on:keyup={handleChange}
+          bind:value={times} />
       </label>
-
     </div>
 
     <div class="tracklist-forms__form">
-      {#if times}
-        <button on:click={copyTextArea}>Copy</button>
-      {/if}
+      {#if times}<button on:click={copyTextArea}>Copy</button>{/if}
       <label>
         Output - READ ONLY
-        <textarea id="output" value={output.join('\n')} />
+        <textarea
+          data-testid="track-name-and-times-output"
+          id="track-name-and-times-output"
+          value={output.join('\n')} />
       </label>
-
     </div>
   </div>
 </main>
