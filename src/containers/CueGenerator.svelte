@@ -48,7 +48,7 @@
 
   const updateTracks = () => {
     trackOutput = '';
-    const htmlTracks = marked($cue_store.tracks);
+    const htmlTracks = marked.parse($cue_store.tracks);
     const cleanedUpTracks = htmlTracks
       .replace(/<p>/g, '')
       .replace(/<\/p>/g, '')
@@ -477,7 +477,7 @@
           </ul>
           <ul>
             {#if trackOutput && $cue_store.artist}
-              {@html marked(trackOutput)}
+              {@html marked.parse(trackOutput)}
             {/if}
           </ul>
         </div>
