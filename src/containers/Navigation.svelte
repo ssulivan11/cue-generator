@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { Link } from 'svelte-navigator';
   import ThemeToggle from './Theme.svelte';
 

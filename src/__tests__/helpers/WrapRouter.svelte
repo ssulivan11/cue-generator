@@ -17,7 +17,7 @@
    * It will be called with the new location and the action that lead
    * to the navigation.
    */
-  export let onNavigate = () => {};
+  export let onNavigate = () => {}; //eslint-disable-line
   /**
    * If true, the component will be wrapped in a Route component as well.
    * Some features of svelte-navigator can only be used inside a Route,

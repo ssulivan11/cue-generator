@@ -1,21 +1,15 @@
-import { render, screen, fireEvent } from '@testing-library/svelte';
+import { screen, fireEvent } from '@testing-library/svelte';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App.svelte';
-import { debug } from 'svelte/internal';
 
-jest.mock('moment', () => {
-  const moment = jest.requireActual('moment');
-  return { default: moment };
-});
-
-describe('Main App route', () => {
+describe('Main page', () => {
   /**
    * TODO:
    * - add track times with missing starting 0s
    * - bad track time positions
-   * - incorrect characeters, NaN
+   * - incorrect characters, NaN
    */
-  test('should show default route and interactions', async () => {
+   test('should show default route and interactions', async () => {
     const { getByRole, getByTestId, debug } = renderWithRouter(App);
     expect(getByRole('heading', { level: 1 }).innerHTML).toBe(
       '💿 Cue Generator'
@@ -65,36 +59,22 @@ describe('Main App route', () => {
     });
     expect(getByTestId(album.input).value).toBe(album.value);
   });
-});
 
-describe('Tracklist Duration route', () => {
-  test('should route and change html', async () => {
+  test('should show time error conditions', async () => {
     const { getByRole, getByTestId, debug } = renderWithRouter(App);
+    
+    await fireEvent.click(getByTestId('clear-button'));
 
-    await fireEvent.click(getByTestId('tracklist-duration-link'));
+    await fireEvent.change(getByTestId("tracklist-input"), {
+      target: { value: "1:00 one\n2:00 two\n1:30 three" }
+    });
+    
+    await fireEvent.keyUp(getByTestId("tracklist-input"), {
+      key: 'Enter',
+      code: 'Enter',
+      charCode: 13
+    });
 
-    expect(getByRole('heading', { level: 1 }).innerHTML).toBe(
-      '⌛ Tracklist Duration'
-    );
-
-    await fireEvent.click(getByTestId('demo-button'));
-    //input track time length
-    expect(getByTestId('track-name-and-times-input').value).toContain(
-      'The Great Gig In The Sky 04:47'
-    );
-    //output track position in album
-    expect(getByTestId('track-name-and-times-output').value).toContain(
-      '14:32 - The Great Gig In The Sky'
-    );
-  });
-});
-
-describe('About route', () => {
-  test('should route and change html', async () => {
-    const { getByRole, getByTestId } = renderWithRouter(App);
-
-    await fireEvent.click(getByTestId('about-link'));
-
-    expect(getByRole('heading', { level: 1 }).innerHTML).toBe('☕ About');
+    expect(getByTestId("tracklist-input").value).toContain("1:00");
   });
 });

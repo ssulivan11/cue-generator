@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+  // @ts-ignore - node does not like marked default import
   import { marked } from 'marked';
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
@@ -20,12 +21,18 @@
 
   let trackOutput = '';
   const setDefaults = () => {
-    if (typeof $cue_store.isAutoFileName === 'undefined')
+    if (typeof $cue_store.isAutoFileName === 'undefined') {
       $cue_store.isAutoFileName = true;
-    if (typeof $cue_store.addEndTrack === 'undefined')
+    }
+    if (typeof $cue_store.addEndTrack === 'undefined') {
       $cue_store.addEndTrack = true;
-    if (typeof $cue_store.trimStart === 'undefined') $cue_store.trimStart = 0;
-    if (typeof $cue_store.trimEnd === 'undefined') $cue_store.trimEnd = 0;
+    }
+    if (typeof $cue_store.trimStart === 'undefined') {
+      $cue_store.trimStart = 0;
+    }
+    if (typeof $cue_store.trimEnd === 'undefined') {
+      $cue_store.trimEnd = 0;
+    }
   };
 
   marked.setOptions({
@@ -66,17 +73,18 @@
       return '&nbsp;&nbsp;&nbsp;&nbsp;';
     };
 
-    let trackTest = [];
+    // eslint-disable-next-line
+    let trackTest: string[] = [];
 
-    cleanedUpTracks.forEach((track, index) => {
-      let trackTime;
-      let trackTitle;
+    cleanedUpTracks.forEach((track: string, index: number) => {
+      let trackTime: string;
+      let trackTitle: string;
 
       const newTrack = () => {
         // if 00:00:00 (in Hour Format)
         if ((track.match(/\:/g) || []).length > 1) {
           const hourTime = /\d{1,2}:\d{1,2}:\d{1,2}/g;
-          let trackDisplayTime = track.match(hourTime);
+          let trackDisplayTime: any = track && track.match(hourTime);
 
           // hour track time starts with 0 or not
           if (trackDisplayTime && trackDisplayTime.toString().length < 8) {
@@ -86,7 +94,7 @@
           }
 
           // ugly way to get hours to min in display from 1:30:15 to 90:15:00
-          let minToHourDigit =
+          let minToHourDigit: number =
             trackDisplayTime && trackDisplayTime.split(':')[0] * 60;
           let minAndSec = trackDisplayTime.substring(3);
           let onlyMin = minAndSec.slice(0, -6);
@@ -100,7 +108,8 @@
           // if 00:00 (in Min/Sec only Format)
           const minTime = /\d{1,2}:\d{1,2}/g;
 
-          let trackDisplayTime = track.match(minTime);
+          let trackDisplayTime: string | null | RegExpMatchArray =
+            track.match(minTime);
           // min track time starts with 0 or not
           if (trackDisplayTime && trackDisplayTime.toString().length < 5) {
             trackDisplayTime = `0${track.match(minTime)}`;
@@ -127,6 +136,7 @@
         $cue_store.artist || ''
       }"</li><li>${insertTab(2)}TITLE "${newTrack()}"</li><li>${insertTab(
         2
+        //@ts-ignore: tracktime will have to be reassigned
       )}INDEX 01 ${trackTime}</li>`;
       return (trackOutput += trackString);
     });
@@ -142,7 +152,10 @@
     // validation of tracklist times and NaN issues
     const properTrackListTest = trackTest
       .slice()
-      .sort((a, b) => a.replace(/:/, '') - b.replace(/:/, ''));
+      .sort(
+        (a: string, b: string) =>
+          (a.replace(/:/, '') as any) - (b.replace(/:/, '') as any)
+      );
     validTrackListTime =
       JSON.stringify(properTrackListTest) === JSON.stringify(trackTest);
     validTrackNumbers = !trackTest.includes('NaN:0');
@@ -152,7 +165,8 @@
 
   const downloadCueFile = () => {
     const element = document.createElement('a');
-    const file = new Blob([document.getElementById('output').innerText], {
+    const outputElement = document.getElementById('output') as HTMLInputElement;
+    const file = new Blob([outputElement.innerText], {
       type: 'text/plain'
     });
     element.href = URL.createObjectURL(file);
@@ -175,8 +189,8 @@
     $cue_store.addEndTrack = true;
     $cue_store.isAutoFileName = clear;
     const tracklistId = document.getElementById('tracklist');
-    tracklistId.dispatchEvent(new Event('focus'));
-    tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+    tracklistId?.dispatchEvent(new Event('focus'));
+    tracklistId?.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
 
     if (clear) setDefaults();
   };
@@ -229,10 +243,6 @@
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-      }
-
-      &.invalid {
-        border-color: var(--error-color);
       }
     }
 
@@ -359,14 +369,16 @@
             <button
               class="cue-app__demo"
               on:click={() => changeEntries()}
-              data-testid="demo-button">
+              data-testid="demo-button"
+            >
               Demo
             </button>
           {:else}
             <button
               class="cue-app__demo"
               on:click={() => changeEntries(true)}
-              data-testid="clear-button">
+              data-testid="clear-button"
+            >
               Clear
             </button>
           {/if}
@@ -374,7 +386,8 @@
             id="artist"
             data-testid="artist-input"
             bind:value={$cue_store.artist}
-            on:keyup={() => artistUpdate()} />
+            on:keyup={() => artistUpdate()}
+          />
         </label>
 
         <label for="album">
@@ -384,7 +397,8 @@
             id="album"
             data-testid="album-input"
             bind:value={$cue_store.album}
-            on:keyup={() => updateFileName()} />
+            on:keyup={() => updateFileName()}
+          />
         </label>
 
         <label for="filename">
@@ -394,7 +408,8 @@
             id="filename"
             data-testid="filename-input"
             bind:value={$cue_store.fileName}
-            disabled={$cue_store.isAutoFileName} />
+            disabled={$cue_store.isAutoFileName}
+          />
         </label>
 
         <label for="tracklist">
@@ -410,10 +425,12 @@
         </label>
         <textarea
           id="tracklist"
+          data-testid="tracklist-input"
           class:invalid={validTrackListTime === false || validTrackNumbers === false}
           bind:value={$cue_store.tracks}
           on:keyup={() => updateTracks()}
-          on:input={() => updateTracks()} />
+          on:input={() => updateTracks()}
+        />
 
         <div class="cue-app__checkboxes">
           <label for="lasttrack" class="cue-app__checkbox">
@@ -421,7 +438,8 @@
               type="checkbox"
               id="lasttrack"
               bind:checked={$cue_store.addEndTrack}
-              on:change={() => updateTracks()} />
+              on:change={() => updateTracks()}
+            />
             Add EOF
           </label>
 
@@ -430,7 +448,8 @@
               type="checkbox"
               id="autofilename"
               bind:checked={$cue_store.isAutoFileName}
-              on:change={() => updateFileName()} />
+              on:change={() => updateFileName()}
+            />
             Auto File Name
           </label>
         </div>
@@ -442,7 +461,8 @@
               type="number"
               id="trimstart"
               bind:value={$cue_store.trimStart}
-              on:change={() => updateTracks()} />
+              on:change={() => updateTracks()}
+            />
           </label>
           <label for="trimend">
             Trim Track End
@@ -450,7 +470,8 @@
               type="number"
               id="trimend"
               bind:value={$cue_store.trimEnd}
-              on:change={() => updateTracks()} />
+              on:change={() => updateTracks()}
+            />
           </label>
         </div>
       </div>

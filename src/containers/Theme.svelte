@@ -1,24 +1,29 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
+
   onMount(async () => {
     const toggleSwitch = document.querySelector(
       '.theme-switch input[type="checkbox"]'
-    );
+    ) as HTMLInputElement;
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
       document.documentElement.setAttribute('data-theme', currentTheme);
       if (currentTheme === 'dark') toggleSwitch.checked = true;
     }
-    const switchTheme = (event) => {
-      if (event.target.checked) {
+
+    const switchTheme = (event: Event) => {
+      const eventTarget = event.target as HTMLInputElement;
+      if (eventTarget.checked) {
         document.documentElement.setAttribute('data-theme', 'dark');
         return localStorage.setItem('theme', 'dark');
       }
       document.documentElement.setAttribute('data-theme', 'light');
       return localStorage.setItem('theme', 'light');
     };
-    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    toggleSwitch?.addEventListener('change', switchTheme, false);
   });
+
 </script>
 
 <style lang="scss">
@@ -75,6 +80,7 @@
       border-radius: 50%;
     }
   }
+
 </style>
 
 <div class="theme-switch">

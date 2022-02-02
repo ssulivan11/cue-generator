@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import moment from 'moment';
 
   let times = '';
-  let output = [];
+  let output: string[] = [];
 
   const handleChange = () => {
     output = [];
@@ -36,15 +36,19 @@
   };
 
   const copyTextArea = () => {
-    document.getElementById('track-name-and-times-output').select();
+    const outputElement = document.getElementById(
+      'track-name-and-times-output'
+    )! as HTMLInputElement;
+    outputElement.select();
+    // @TODO: look into svelte-codemirror
     document.execCommand('copy');
   };
 
   const demoEntries = () => {
     times = `Speak To Me 01:08\nBreathe 02:48\nOn The Run 03:31\nTime 07:05\nThe Great Gig In The Sky 04:47\nMoney 06:23\nUs And Them 07:48\nAny Colour You Like 03:25\nBrain Damage 03:50\nEclipse 02:06`;
     const tracklistId = document.getElementById('track-name-and-times-input');
-    tracklistId.dispatchEvent(new Event('focus'));
-    tracklistId.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+    tracklistId?.dispatchEvent(new Event('focus'));
+    tracklistId?.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
   };
 
 </script>
@@ -160,7 +164,8 @@
           data-testid="track-name-and-times-input"
           id="track-name-and-times-input"
           on:keyup={handleChange}
-          bind:value={times} />
+          bind:value={times}
+        />
       </label>
     </div>
 
@@ -171,7 +176,8 @@
         <textarea
           data-testid="track-name-and-times-output"
           id="track-name-and-times-output"
-          value={output.join('\n')} />
+          value={output.join('\n')}
+        />
       </label>
     </div>
   </div>

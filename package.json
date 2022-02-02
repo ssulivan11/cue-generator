@@ -10,7 +10,7 @@
     "--------- INTEGRITY ------------------------------": "",
     "format": "pretty-quick --write .",
     "format:check": "pretty-quick --check .",
-    "lint": "eslint . --ext .js,.svelte --ignore-path .gitignore",
+    "lint": "eslint . --ext .svelte --ignore-path .gitignore --quiet ",
     "test": "jest src --coverage",
     "test:watch": "jest src --watch --coverage",
     "nuke": "npm cache clean --force && rm -rf node_modules && npm install"
@@ -38,6 +38,9 @@
     "@tsconfig/svelte": "^1.0.10",
     "@types/jest": "^27.4.0",
     "@types/marked": "^1.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "buildsize-cli": "^1.0.6",
     "eslint": "^7.1.0",
