@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* global document, localStorage */
   import { onMount } from 'svelte';
 
   onMount(async () => {

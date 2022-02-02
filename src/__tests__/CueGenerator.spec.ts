@@ -9,8 +9,8 @@ describe('Main page', () => {
    * - bad track time positions
    * - incorrect characters, NaN
    */
-   test('should show default route and interactions', async () => {
-    const { getByRole, getByTestId, debug } = renderWithRouter(App);
+  test('should show default route and interactions', async () => {
+    const { getByRole, getByTestId } = renderWithRouter(App);
     expect(getByRole('heading', { level: 1 }).innerHTML).toBe(
       '💿 Cue Generator'
     );
@@ -35,9 +35,13 @@ describe('Main page', () => {
       album: {
         input: 'album-input',
         value: 'Take Me to Your Leader'
+      },
+      filename: {
+        input: 'filename-input',
+        value: 'King Geedorah - Take Me to Your Leader'
       }
     };
-    const { artist, album } = testVals;
+    const { artist, album, filename } = testVals;
 
     await fireEvent.change(getByTestId(artist.input), {
       target: { value: artist.value }
@@ -58,23 +62,33 @@ describe('Main page', () => {
       charCode: 13
     });
     expect(getByTestId(album.input).value).toBe(album.value);
+
+    await fireEvent.change(getByTestId(filename.input), {
+      target: { value: filename.value }
+    });
+    await fireEvent.keyUp(getByTestId(filename.input), {
+      key: 'Enter',
+      code: 'Enter',
+      charCode: 13
+    });
+    expect(getByTestId(filename.input).value).toBe(filename.value);
   });
 
   test('should show time error conditions', async () => {
-    const { getByRole, getByTestId, debug } = renderWithRouter(App);
-    
+    const { getByTestId } = renderWithRouter(App);
+
     await fireEvent.click(getByTestId('clear-button'));
 
-    await fireEvent.change(getByTestId("tracklist-input"), {
-      target: { value: "1:00 one\n2:00 two\n1:30 three" }
+    await fireEvent.change(getByTestId('tracklist-input'), {
+      target: { value: '1:00 one\n2:00 two\n1:30 three' }
     });
-    
-    await fireEvent.keyUp(getByTestId("tracklist-input"), {
+
+    await fireEvent.keyUp(getByTestId('tracklist-input'), {
       key: 'Enter',
       code: 'Enter',
       charCode: 13
     });
 
-    expect(getByTestId("tracklist-input").value).toContain("1:00");
+    expect(getByTestId('tracklist-input').value).toContain('1:00');
   });
 });

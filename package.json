@@ -10,13 +10,13 @@
     "--------- INTEGRITY ------------------------------": "",
     "format": "pretty-quick --write .",
     "format:check": "pretty-quick --check .",
-    "lint": "eslint . --ext .svelte --ignore-path .gitignore --quiet ",
-    "test": "jest src --coverage",
-    "test:watch": "jest src --watch --coverage",
+    "lint": "eslint . --ext .svelte,.ts --ignore-path .gitignore --fix",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch --coverage",
     "nuke": "npm cache clean --force && rm -rf node_modules && npm install"
   },
   "lint-staged": {
-    "*.{js,svelte}": [
+    "*.{ts,svelte}": [
       "npm run lint --fix"
     ]
   },
@@ -44,6 +44,8 @@
     "babel-jest": "^26.6.3",
     "buildsize-cli": "^1.0.6",
     "eslint": "^7.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-svelte3": "^2.7.3",
     "husky": "^4.2.5",
     "jest": "^26.6.3",
@@ -51,7 +53,7 @@
     "lint-staged": "^10.2.7",
     "moment": "^2.29.1",
     "node-sass": "^7.0.1",
-    "prettier": "^2.0.5",
+    "prettier": "^2.5.1",
     "prettier-plugin-svelte": "^1.1.0",
     "pretty-quick": "^2.0.1",
     "rollup": "^2.12.1",
@@ -65,10 +67,10 @@
     "shelljs": "^0.8.5",
     "sirv-cli": "^0.4.4",
     "svelte-check": "^1.1.19",
+    "svelte-clipboard": "^1.0.0",
     "svelte-eslint-parser": "^0.13.0",
     "svelte-jester": "^1.1.5",
     "svelte-navigator": "^3.1.5",
-    "svelte-popover": "^2.0.8",
     "svelte-preprocess": "^4.6.1",
     "ts-jest": "^26.4.4",
     "typescript": "^4.1.2"

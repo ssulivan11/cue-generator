@@ -1,10 +1,10 @@
-import { screen, fireEvent } from '@testing-library/svelte';
+import { fireEvent } from '@testing-library/svelte';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App.svelte';
 
 describe('Tracklist Duration page', () => {
   test('should route and change html', async () => {
-    const { getByRole, getByTestId, debug } = renderWithRouter(App);
+    const { getByRole, getByTestId } = renderWithRouter(App);
 
     await fireEvent.click(getByTestId('tracklist-duration-link'));
 

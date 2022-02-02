@@ -1,6 +1,7 @@
 # 💿 Cue Generator
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/55844e54-e253-4018-856e-6cf7dcbd9506/deploy-status)](https://app.netlify.com/sites/cue-generator/deploys)
+[![CI](https://github.com/ssulivan11/cue-generator/actions/workflows/main.yml/badge.svg)](https://github.com/ssulivan11/cue-generator/actions/workflows/main.yml)
 
 A tool to build valid CUE files with helpful track list formatting. Click the demo button to see the expected formats if needed.
 

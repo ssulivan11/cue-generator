@@ -2,16 +2,13 @@ const codeCoverage = {
   coverageThreshold: {
     global: {
       statements: 80,
-      branches: 60,
+      branches: 55,
       functions: 50,
       lines: 80
     }
   },
-  collectCoverageFrom: [
-    "src/**/*.svelte",
-    "!src/__tests__/**/*"
-  ]
-}
+  collectCoverageFrom: ['src/**/*.svelte', '!src/__tests__/**/*']
+};
 
 const jestConfig = {
   ...codeCoverage,
@@ -33,8 +30,7 @@ const jestConfig = {
   verbose: true,
   transformIgnorePatterns: ['<rootDir>/node_modules/(?!svelte-navigator)'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-  setupFiles: ["./src/__tests__/helpers/mock.js"]
+  setupFiles: ['./src/__tests__/helpers/mock.js']
 };
 
 module.exports = jestConfig;
- 

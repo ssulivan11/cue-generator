@@ -5,6 +5,11 @@ module.exports = {
     extraFileExtensions: ['.svelte']
   },
   ignorePatterns: ['*.js'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended'
+  ],
   overrides: [
     {
       files: ['*.svelte'],
@@ -13,5 +18,11 @@ module.exports = {
         parser: '@typescript-eslint/parser'
       }
     }
-  ]
+  ],
+  rules: {
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { 'ts-ignore': 'allow-with-description' }
+    ]
+  }
 };

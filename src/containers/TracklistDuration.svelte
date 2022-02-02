@@ -1,5 +1,7 @@
 <script lang="ts">
+  /* global document */
   import moment from 'moment';
+  import Clipboard from 'svelte-clipboard';
 
   let times = '';
   let output: string[] = [];
@@ -38,14 +40,19 @@
   const copyTextArea = () => {
     const outputElement = document.getElementById(
       'track-name-and-times-output'
-    )! as HTMLInputElement;
+    ) as HTMLInputElement;
     outputElement.select();
-    // @TODO: look into svelte-codemirror
-    document.execCommand('copy');
   };
 
   const demoEntries = () => {
     times = `Speak To Me 01:08\nBreathe 02:48\nOn The Run 03:31\nTime 07:05\nThe Great Gig In The Sky 04:47\nMoney 06:23\nUs And Them 07:48\nAny Colour You Like 03:25\nBrain Damage 03:50\nEclipse 02:06`;
+    const tracklistId = document.getElementById('track-name-and-times-input');
+    tracklistId?.dispatchEvent(new Event('focus'));
+    tracklistId?.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+  };
+
+  const clearEntries = () => {
+    times = ``;
     const tracklistId = document.getElementById('track-name-and-times-input');
     tracklistId?.dispatchEvent(new Event('focus'));
     tracklistId?.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
@@ -157,6 +164,11 @@
     <div class="tracklist-forms__form">
       {#if !times}
         <button data-testid="demo-button" on:click={demoEntries}>Demo</button>
+      {:else}
+        <button
+          data-testid="clear-button"
+          on:click={clearEntries}
+        >Clear</button>
       {/if}
       <label>
         Track Name and Times
@@ -170,7 +182,6 @@
     </div>
 
     <div class="tracklist-forms__form">
-      {#if times}<button on:click={copyTextArea}>Copy</button>{/if}
       <label>
         Output - READ ONLY
         <textarea
@@ -179,6 +190,17 @@
           value={output.join('\n')}
         />
       </label>
+      {#if times}
+        <Clipboard
+          text={output.join('\n')}
+          let:copy
+          on:copy={() => {
+            copyTextArea();
+          }}
+        >
+          <button on:click={copy}>Copy</button>
+        </Clipboard>
+      {/if}
     </div>
   </div>
 </main>

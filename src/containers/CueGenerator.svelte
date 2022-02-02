@@ -1,5 +1,5 @@
 <script lang="ts">
-  // @ts-ignore - node does not like marked default import
+  /* global document, localStorage */
   import { marked } from 'marked';
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
@@ -82,7 +82,7 @@
 
       const newTrack = () => {
         // if 00:00:00 (in Hour Format)
-        if ((track.match(/\:/g) || []).length > 1) {
+        if ((track.match(/:/g) || []).length > 1) {
           const hourTime = /\d{1,2}:\d{1,2}:\d{1,2}/g;
           let trackDisplayTime: any = track && track.match(hourTime);
 
@@ -101,7 +101,6 @@
           minToHourDigit = minToHourDigit + parseInt(onlyMin, 10);
           minAndSec = minAndSec && minAndSec.substring(3);
 
-          // console.warn(trackDisplayTime)
           trackTime = `${minToHourDigit}:${minAndSec}`;
           trackTitle = track.replace(hourTime, '');
         } else {
@@ -154,7 +153,7 @@
       .slice()
       .sort(
         (a: string, b: string) =>
-          (a.replace(/:/, '') as any) - (b.replace(/:/, '') as any)
+          (a.replace(/:/g, '') as any) - (b.replace(/:/g, '') as any)
       );
     validTrackListTime =
       JSON.stringify(properTrackListTest) === JSON.stringify(trackTest);
