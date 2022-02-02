@@ -77,7 +77,8 @@
       <Link
         class="header__link"
         to="tracklist-duration"
-        data-testid="tracklist-duration-link">
+        data-testid="tracklist-duration-link"
+      >
         Tracklist Duration
       </Link>
       <Link class="header__link" to="about" data-testid="about-link">
@@ -86,10 +87,12 @@
       <a
         href="https://github.com/ssulivan11/cue-generator"
         class="header__github"
-        target="_blank">
+        target="_blank"
+      >
         <img
           alt="github"
-          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
+          src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+        />
       </a>
     </nav>
     <ThemeToggle />

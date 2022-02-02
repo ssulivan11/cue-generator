@@ -1,41 +1,17 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    'eslint:recommended',
-  ],
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json']
+    project: './tsconfig.json',
+    extraFileExtensions: ['.svelte']
   },
-  env: {
-    es6: true,
-    browser: true,
-    node: true,
-    jest: true
-  },
-  plugins: ['svelte3', '@typescript-eslint'],
+  ignorePatterns: ['*.js'],
   overrides: [
     {
       files: ['*.svelte'],
-      processor: 'svelte3/svelte3',
-     
-      extends: [
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking'
-      ],
-    },
-    {
-      files: ['*.ts'],
-      extends: [
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-      ],
-     
+      parser: 'svelte-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser'
+      }
     }
-  ],
-  settings: {
-    'svelte3/typescript': true,
-    'svelte3/ignore-styles': () => true,
-  },
-  ignorePatterns: ["*.js"]
+  ]
 };

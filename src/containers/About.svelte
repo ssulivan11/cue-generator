@@ -7,6 +7,7 @@
       width: 80%;
     }
   }
+
 </style>
 
 <main>
