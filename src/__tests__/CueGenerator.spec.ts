@@ -43,7 +43,8 @@ describe('Main page', () => {
     };
     const { artist, album, filename } = testVals;
 
-    await fireEvent.change(getByTestId(artist.input), {
+    await fireEvent.change(getByTestId(artist.input), {});
+    await fireEvent.input(getByTestId(artist.input), {
       target: { value: artist.value }
     });
     await fireEvent.keyUp(getByTestId(artist.input), {
@@ -53,7 +54,8 @@ describe('Main page', () => {
     });
     expect(getByTestId(artist.input).value).toBe(artist.value);
 
-    await fireEvent.change(getByTestId(album.input), {
+    await fireEvent.change(getByTestId(album.input), {});
+    await fireEvent.input(getByTestId(album.input), {
       target: { value: album.value }
     });
     await fireEvent.keyUp(getByTestId(album.input), {
@@ -63,7 +65,8 @@ describe('Main page', () => {
     });
     expect(getByTestId(album.input).value).toBe(album.value);
 
-    await fireEvent.change(getByTestId(filename.input), {
+    await fireEvent.change(getByTestId(filename.input), {});
+    await fireEvent.input(getByTestId(filename.input), {
       target: { value: filename.value }
     });
     await fireEvent.keyUp(getByTestId(filename.input), {
@@ -77,18 +80,73 @@ describe('Main page', () => {
   test('should show time error conditions', async () => {
     const { getByTestId } = renderWithRouter(App);
 
+    // valid
     await fireEvent.click(getByTestId('clear-button'));
+    await fireEvent.click(getByTestId('demo-button'));
+    expect(getByTestId('tracklist-input').getAttribute('class').length).toBe(
+      14
+    );
 
-    await fireEvent.change(getByTestId('tracklist-input'), {
+    // invalid
+    await fireEvent.change(getByTestId('tracklist-input'), {});
+    await fireEvent.input(getByTestId('tracklist-input'), {
       target: { value: '1:00 one\n2:00 two\n1:30 three' }
     });
+    expect(getByTestId('tracklist-input').getAttribute('class')).toContain(
+      'invalid'
+    );
+    expect(getByTestId('tracklist-input').getAttribute('class').length).toBe(
+      22
+    );
+  });
 
-    await fireEvent.keyUp(getByTestId('tracklist-input'), {
-      key: 'Enter',
-      code: 'Enter',
-      charCode: 13
+  test('should show validation error conditions', async () => {
+    const { getByTestId } = renderWithRouter(App);
+
+    // valid
+    await fireEvent.click(getByTestId('clear-button'));
+    await fireEvent.click(getByTestId('demo-button'));
+    expect(getByTestId('tracklist-input').getAttribute('class').length).toBe(
+      14
+    );
+
+    // invalid
+    await fireEvent.change(getByTestId('tracklist-input'), {});
+    await fireEvent.input(getByTestId('tracklist-input'), {
+      target: { value: '1:00 one\n2:00:: two\n1:30 three' }
+    });
+    expect(getByTestId('tracklist-input').getAttribute('class')).toContain(
+      'invalid'
+    );
+    expect(getByTestId('tracklist-input').getAttribute('class').length).toBe(
+      22
+    );
+  });
+
+  test('should show default route and interactions', async () => {
+    const { getByTestId } = renderWithRouter(App);
+
+    await fireEvent.click(getByTestId('clear-button'));
+    await fireEvent.click(getByTestId('demo-button'));
+
+    await fireEvent.change(getByTestId('add-end-track-checkbox'));
+    await fireEvent.change(getByTestId('auto-file-name-checkbox'));
+    expect(getByTestId('filename-input').value).toBe(
+      'The Dark Side of the Moon Full Album 1973'
+    );
+
+    await fireEvent.change(getByTestId('auto-file-name-checkbox'));
+
+    await fireEvent.change(getByTestId('filename-input'), {});
+    await fireEvent.input(getByTestId('filename-input'), {
+      target: { value: 'The Dark Side of the Moon' }
     });
 
-    expect(getByTestId('tracklist-input').value).toContain('1:00');
+    expect(getByTestId('filename-input').value).toBe(
+      'The Dark Side of the Moon'
+    );
+
+    expect(getByTestId('output').innerHTML).toContain('TITLE "EOF"');
+    expect(getByTestId('output').innerHTML).toContain('INDEX 01 9999:59:59');
   });
 });

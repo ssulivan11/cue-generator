@@ -2,27 +2,26 @@
   /* global document, localStorage */
   import { onMount } from 'svelte';
 
+  const switchTheme = (event: Event) => {
+    const eventTarget = event.target as HTMLInputElement;
+    if (eventTarget.checked) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      return localStorage.setItem('theme', 'dark');
+    }
+    document.documentElement.setAttribute('data-theme', 'light');
+    return localStorage.setItem('theme', 'light');
+  };
+
   onMount(async () => {
     const toggleSwitch = document.querySelector(
-      '.theme-switch input[type="checkbox"]'
+      '.theme-switch input[id="theme-checkbox"]'
     ) as HTMLInputElement;
     const currentTheme = localStorage.getItem('theme');
+
     if (currentTheme) {
       document.documentElement.setAttribute('data-theme', currentTheme);
       if (currentTheme === 'dark') toggleSwitch.checked = true;
     }
-
-    const switchTheme = (event: Event) => {
-      const eventTarget = event.target as HTMLInputElement;
-      if (eventTarget.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        return localStorage.setItem('theme', 'dark');
-      }
-      document.documentElement.setAttribute('data-theme', 'light');
-      return localStorage.setItem('theme', 'light');
-    };
-
-    toggleSwitch?.addEventListener('change', switchTheme, false);
   });
 
 </script>
@@ -85,8 +84,20 @@
 </style>
 
 <div class="theme-switch">
-  <label class="theme-switch__label" for="checkbox">
-    <input class="theme-switch__input" type="checkbox" id="checkbox" />
-    <div class="theme-switch__slider" />
+  <label
+    class="theme-switch__label"
+    for="theme-checkbox"
+    on:click={() => {
+      switchTheme;
+    }}
+  >
+    <input
+      class="theme-switch__input"
+      type="checkbox"
+      id="theme-checkbox"
+      on:change={(event) => switchTheme(event)}
+      data-testid="theme-checkbox"
+    />
+    <div class="theme-switch__slider" data-testid="theme-slider" />
   </label>
 </div>

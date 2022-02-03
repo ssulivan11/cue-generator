@@ -436,6 +436,7 @@
             <input
               type="checkbox"
               id="lasttrack"
+              data-testid="add-end-track-checkbox"
               bind:checked={$cue_store.addEndTrack}
               on:change={() => updateTracks()}
             />
@@ -446,6 +447,7 @@
             <input
               type="checkbox"
               id="autofilename"
+              data-testid="auto-file-name-checkbox"
               bind:checked={$cue_store.isAutoFileName}
               on:change={() => updateFileName()}
             />
@@ -459,6 +461,7 @@
             <input
               type="number"
               id="trimstart"
+              data-testid="trim-start-input"
               bind:value={$cue_store.trimStart}
               on:change={() => updateTracks()}
             />
@@ -468,6 +471,7 @@
             <input
               type="number"
               id="trimend"
+              data-testid="trim-end-input"
               bind:value={$cue_store.trimEnd}
               on:change={() => updateTracks()}
             />

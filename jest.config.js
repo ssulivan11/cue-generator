@@ -1,10 +1,10 @@
 const codeCoverage = {
   coverageThreshold: {
     global: {
-      statements: 80,
-      branches: 55,
-      functions: 50,
-      lines: 80
+      statements: 90,
+      branches: 75,
+      functions: 75,
+      lines: 90
     }
   },
   collectCoverageFrom: ['src/**/*.svelte', '!src/__tests__/**/*']
