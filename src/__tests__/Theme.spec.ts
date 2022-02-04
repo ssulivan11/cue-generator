@@ -4,7 +4,6 @@ import App from '../App.svelte';
 
 describe('About page', () => {
   const localStorageMock = () => {
-    const store = {};
     return {
       getItem: () => {
         return 'dark';

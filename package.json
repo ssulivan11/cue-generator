@@ -5,14 +5,21 @@
   "scripts": {
     "--------- BUILDING -------------------------------": "",
     "dev": "rollup -c -w",
-    "build": "rollup -c && buildsize-cli",
+    "build": "rollup -c",
     "start": "sirv public --single",
     "--------- INTEGRITY ------------------------------": "",
     "format": "pretty-quick --write .",
     "format:check": "pretty-quick --check .",
-    "lint": "eslint . --ext .svelte,.ts --ignore-path .gitignore --fix",
+    "lint": "eslint . --ext .svelte,.ts --fix",
+    "bsize": "buildsize-cli",
+    "--------- TESTING --------------------------------": "",
     "test": "jest --coverage",
     "test:watch": "jest --watch --coverage",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "cy:start": "start-server-and-test start http://localhost:5000 cy:open",
+    "cy:ci": "start-server-and-test start http://localhost:5000 cy:run",
+    "--------- HELPERS --------------------------------": "",
     "nuke": "npm cache clean --force && rm -rf node_modules && npm install"
   },
   "lint-staged": {
@@ -22,8 +29,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged && npm run test",
-      "pre-push": "npm run build"
+      "pre-commit": "lint-staged && pretty-quick --staged && npm run test && npm run build"
     }
   },
   "devDependencies": {
@@ -43,6 +49,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "buildsize-cli": "^1.0.6",
+    "cypress": "^9.4.1",
     "eslint": "^7.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -66,6 +73,7 @@
     "sass": "^1.49.0",
     "shelljs": "^0.8.5",
     "sirv-cli": "^0.4.4",
+    "start-server-and-test": "^1.14.0",
     "svelte-check": "^1.1.19",
     "svelte-clipboard": "^1.0.0",
     "svelte-eslint-parser": "^0.13.0",

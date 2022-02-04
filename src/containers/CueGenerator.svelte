@@ -483,7 +483,10 @@
       <label for="track-output">
         Output - READ ONLY
         {#if trackOutput && $cue_store.artist && $cue_store.fileName}
-          <button on:click={() => downloadCueFile()}>Download</button>
+          <button
+            on:click={() => downloadCueFile()}
+            data-testid="download-button"
+          >Download</button>
         {/if}
       </label>
       <div class="cue-app__output" id="track-output">

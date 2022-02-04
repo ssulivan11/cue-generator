@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src"],
+  "include": ["src/**/*", "cypress/**/*", "*.json"],
   "exclude": ["node_modules/*", "public/*"],
   "compilerOptions": {
     "types": ["jest"],
