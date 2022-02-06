@@ -84,6 +84,7 @@
         // if 00:00:00 (in Hour Format)
         if ((track.match(/:/g) || []).length > 1) {
           const hourTime = /\d{1,2}:\d{1,2}:\d{1,2}/g;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let trackDisplayTime: any = track && track.match(hourTime);
 
           // hour track time starts with 0 or not
@@ -149,12 +150,11 @@
     }
 
     // validation of tracklist times and NaN issues
-    const properTrackListTest = trackTest
-      .slice()
-      .sort(
-        (a: string, b: string) =>
-          (a.replace(/:/g, '') as any) - (b.replace(/:/g, '') as any)
-      );
+    const properTrackListTest = trackTest.slice().sort(
+      (a: string, b: string) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (a.replace(/:/g, '') as any) - (b.replace(/:/g, '') as any)
+    );
     validTrackListTime =
       JSON.stringify(properTrackListTest) === JSON.stringify(trackTest);
     validTrackNumbers = !trackTest.includes('NaN:0');
