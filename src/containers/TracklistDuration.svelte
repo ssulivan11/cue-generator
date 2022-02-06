@@ -1,7 +1,6 @@
 <script lang="ts">
   /* global document */
   import moment from 'moment';
-  import Clipboard from 'svelte-clipboard';
 
   let times = '';
   let output: string[] = [];
@@ -42,6 +41,7 @@
       'track-name-and-times-output'
     ) as HTMLInputElement;
     outputElement.select();
+    return document.execCommand('copy');
   };
 
   const demoEntries = () => {
@@ -191,15 +191,7 @@
         />
       </label>
       {#if times}
-        <Clipboard
-          text={output.join('\n')}
-          let:copy
-          on:copy={() => {
-            copyTextArea();
-          }}
-        >
-          <button on:click={copy}>Copy</button>
-        </Clipboard>
+        <button data-testid="copy-button" on:click={copyTextArea}>Copy</button>
       {/if}
     </div>
   </div>

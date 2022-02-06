@@ -60,7 +60,22 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: Test
         run: npm run test
-  lint-and-format:
+  lint:
+    needs: setup
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Lint
+        run: npm run lint
+  format:
     needs: setup
     timeout-minutes: 15
     runs-on: ubuntu-latest
@@ -75,8 +90,6 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: Prettier
         run: npm run format:check
-      - name: Lint
-        run: npm run lint
   ci-tests:
     needs: build
     timeout-minutes: 15
