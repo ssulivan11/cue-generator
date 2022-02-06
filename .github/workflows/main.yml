@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '14'
       - name: Install modules
-        run: npm install --registry https://registry.npmjs.org
+        run: npm install
       - name: Prettier
         run: npm run format:check
       - name: Lint
@@ -31,6 +31,6 @@ jobs:
         with:
           node-version: '14'
       - name: Install modules
-        run: npm install --registry https://registry.npmjs.org
+        run: npm install
       - name: Build
         run: npm run build

@@ -1,6 +1,6 @@
 import path = require('path');
 
-describe('The Home Page', () => {
+describe('CueGenerator route', () => {
   Cypress.on('uncaught:exception', () => false);
   const downloadsFolder = Cypress.config('downloadsFolder');
 
