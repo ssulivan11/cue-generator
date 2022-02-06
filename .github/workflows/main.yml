@@ -8,40 +8,95 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Install modules
-        run: npm install
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
+      - uses: actions/cache@v2
         with:
-          runTests: false
-      # - name: Prettier
-      #   run: npm run format:check
-      # - name: Lint
-      #   run: npm run lint
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - run: npm install
+  build:
+    needs: setup
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Cypress install
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     runTests: false
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: Build
         run: npm run build
-      - name: Upload build and .svelte-kit folder
+      - name: Upload public build folder
         uses: actions/upload-artifact@v2
         with:
           name: build
           if-no-files-found: error
           path: public
   unit-tests:
-    needs: build
+    needs: setup
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Test
+        run: npm run test
+  lint-and-format:
+    needs: setup
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Prettier
+        run: npm run format:check
+      - name: Lint
+        run: npm run lint
+  ci-tests:
+    needs: setup
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
       - uses: actions/download-artifact@v2
         with:
           name: build
           path: build
-      - name: Test
-        run: npm run test
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: python3 -m http.server --directory build 3000
+          wait-on: http://localhost:3000/
+          wait-on-timeout: 10
