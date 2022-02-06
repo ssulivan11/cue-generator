@@ -34,7 +34,10 @@ export default {
     progress(),
     bundleSize(),
     typeCheck(),
-    typescript({ sourceMap: !production }),
+    typescript({
+      sourceMap: !production,
+      exclude: ['cypress/**/*', '**/__tests__/**/*']
+    }),
     svelte({
       preprocess: autoPreprocess(),
       dev: !production,
