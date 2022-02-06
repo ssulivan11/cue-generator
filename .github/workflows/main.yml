@@ -78,7 +78,7 @@ jobs:
       - name: Lint
         run: npm run lint
   ci-tests:
-    needs: setup
+    needs: build
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:

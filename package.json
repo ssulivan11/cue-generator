@@ -20,16 +20,17 @@
     "cy:start": "start-server-and-test dev http://localhost:5000 cy:open",
     "cy:ci": "start-server-and-test start http://localhost:5000 cy:run",
     "--------- HELPERS --------------------------------": "",
-    "nuke": "npm cache clean --force && rm -rf node_modules && npm install"
+    "nuke": "npm cache clean --force && rm -rf node_modules && npm install",
+    "huskypre-commit": "lint-staged && pretty-quick --staged && npm run test && npm run build"
   },
   "lint-staged": {
     "*.{ts,svelte}": [
-      "npm run lint --fix"
+      "npm run lint"
     ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged && npm run test && npm run build"
+      "pre-commit": "npm run lint"
     }
   },
   "devDependencies": {
