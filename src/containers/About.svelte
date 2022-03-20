@@ -24,6 +24,21 @@
     recognized by most CD playback and editing programs.
   </p>
 
+  <ul>
+    <li>
+      <a
+        href="https://sourceforge.net/projects/mp3splt/files/mp3splt-gtk/0.9.2/"
+        target="_blank"
+      >mp3 splt gtk 0.9.2
+      </a>
+    </li>
+    <li>
+      <a href="https://www.byclickdownloader.com/" target="_blank">ByClick
+        Downloader 2.3.11
+      </a>
+    </li>
+  </ul>
+
   <p>
     Please use these tools for good and support artists to the best of your
     ability.
