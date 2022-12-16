@@ -6,7 +6,7 @@
     "--------- BUILDING -------------------------------": "",
     "dev": "rollup -c -w",
     "build": "rollup -c",
-    "start": "sirv public --single",
+    "start": "sirv public --single --dev --port 3000",
     "--------- INTEGRITY ------------------------------": "",
     "format": "pretty-quick --write .",
     "format:check": "pretty-quick --check .",
@@ -17,8 +17,8 @@
     "test:watch": "jest --watch --coverage",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "cy:start": "start-server-and-test dev http://localhost:5000 cy:open",
-    "cy:ci": "start-server-and-test start http://localhost:5000 cy:run",
+    "cy:start": "start-server-and-test dev http://localhost:3000 cy:open",
+    "cy:ci": "start-server-and-test start http://localhost:3000 cy:run",
     "--------- HELPERS --------------------------------": "",
     "nuke": "npm cache clean --force && rm -rf node_modules && npm install",
     "huskypre-commit": "lint-staged && pretty-quick --staged && npm run test && npm run build"
@@ -85,6 +85,6 @@
   },
   "dependencies": {
     "marked": "^4.0.12",
-    "svelte": "^3.29.6"
+    "svelte": "^3.55.0"
   }
 }

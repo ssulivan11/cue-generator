@@ -84,10 +84,14 @@
 </style>
 
 <div class="theme-switch">
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <label
     class="theme-switch__label"
     for="theme-checkbox"
     on:click={() => {
+      switchTheme;
+    }}
+    on:keypress={() => {
       switchTheme;
     }}
   >

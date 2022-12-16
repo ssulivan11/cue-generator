@@ -88,6 +88,7 @@
         href="https://github.com/ssulivan11/cue-generator"
         class="header__github"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <img
           alt="github"

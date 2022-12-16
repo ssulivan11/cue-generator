@@ -110,6 +110,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: python3 -m http.server --directory build 5000
-          wait-on: http://localhost:5000/
+          start: python3 -m http.server --directory build 3000
+          wait-on: http://localhost:3000/
           wait-on-timeout: 10

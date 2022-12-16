@@ -8,6 +8,15 @@
     }
   }
 
+  ul li {
+    margin: 10px 0 0 45px;
+    list-style-type: disc;
+  }
+
+  h3 {
+    margin: 0 25px;
+  }
+
 </style>
 
 <main>
@@ -24,17 +33,22 @@
     recognized by most CD playback and editing programs.
   </p>
 
+  <h3>Tools</h3>
   <ul>
     <li>
       <a
         href="https://sourceforge.net/projects/mp3splt/files/mp3splt-gtk/0.9.2/"
         target="_blank"
+        rel="noopener noreferrer"
       >mp3 splt gtk 0.9.2
       </a>
     </li>
     <li>
-      <a href="https://www.byclickdownloader.com/" target="_blank">ByClick
-        Downloader 2.3.11
+      <a
+        href="https://www.byclickdownloader.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >ByClick Downloader 2.3.11
       </a>
     </li>
   </ul>
