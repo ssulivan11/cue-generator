@@ -25,10 +25,6 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
-      # - name: Cypress install
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     runTests: false
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -60,6 +56,12 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: Test
         run: npm run test
+      - name: Upload coverage folder
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          if-no-files-found: error
+          path: coverage/lcov-report
   lint:
     needs: setup
     timeout-minutes: 15
@@ -90,7 +92,7 @@ jobs:
           key: node-modules-${{ hashFiles('package-lock.json') }}
       - name: Prettier
         run: npm run format:check
-  ci-tests:
+  e2e-tests:
     needs: build
     timeout-minutes: 15
     runs-on: ubuntu-latest
